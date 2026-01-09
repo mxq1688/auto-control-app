@@ -29,8 +29,16 @@ class BootReceiver : BroadcastReceiver() {
                 Log.d(TAG, "恢复定时任务")
                 
                 AlarmHelper(context).apply {
-                    setMorningAlarm(prefs.getMorningHour(), prefs.getMorningMinute())
-                    setEveningAlarm(prefs.getEveningHour(), prefs.getEveningMinute())
+                    setMorningAlarm(
+                        prefs.getMorningStartHour(), prefs.getMorningStartMinute(),
+                        prefs.getMorningEndHour(), prefs.getMorningEndMinute()
+                    )
+                    setEveningAlarm(
+                        prefs.getEveningStartHour(), prefs.getEveningStartMinute(),
+                        prefs.getEveningEndHour(), prefs.getEveningEndMinute()
+                    )
+                    // 关闭飞书（使用配置的时间列表）
+                    setCloseAppAlarms(prefs.getCloseTimes())
                 }
                 
                 // 启动前台服务

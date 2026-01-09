@@ -3115,6 +3115,7 @@ int id bounceBoth 0x7f08005f
 int id bounceEnd 0x7f080060
 int id bounceStart 0x7f080061
 int id btn_accessibility 0x7f080062
+int id btn_add_close_time 0x7f0801f7
 int id btn_check_feishu 0x7f080063
 int id btn_punch_now 0x7f080064
 int id buttonPanel 0x7f080065
@@ -3144,6 +3145,7 @@ int id compress 0x7f08007c
 int id confirm_button 0x7f08007d
 int id constraint 0x7f08007e
 int id container 0x7f08007f
+int id container_close_times 0x7f0801f8
 int id content 0x7f080080
 int id contentPanel 0x7f080081
 int id contiguous 0x7f080082

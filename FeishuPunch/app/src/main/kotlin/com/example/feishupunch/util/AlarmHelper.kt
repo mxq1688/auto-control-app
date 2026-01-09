@@ -19,8 +19,9 @@ class AlarmHelper(private val context: Context) {
         private const val TAG = "AlarmHelper"
         private const val MORNING_REQUEST_CODE = 1001
         private const val EVENING_REQUEST_CODE = 1002
-        private const val CLOSE_APP_REQUEST_CODE = 1003
-        private const val CLOSE_APP_EVENING_REQUEST_CODE = 1004
+        // 关闭闹钟从 2000 开始，支持多个
+        private const val CLOSE_APP_BASE_REQUEST_CODE = 2000
+        private const val MAX_CLOSE_ALARMS = 20
     }
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -79,29 +80,32 @@ class AlarmHelper(private val context: Context) {
     }
 
     /**
-     * 设置关闭飞书闹钟（晚上23:00）
+     * 设置多个关闭飞书闹钟
      */
-    fun setCloseAppAlarm(hour: Int = 23, minute: Int = 0) {
-        val calendar = getNextAlarmTime(hour, minute)
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            action = AlarmReceiver.ACTION_CLOSE_FEISHU
-        }
+    fun setCloseAppAlarms(times: List<CloseTime>) {
+        // 先取消所有关闭闹钟
+        cancelAllCloseAlarms()
         
-        setAlarm(calendar.timeInMillis, intent, CLOSE_APP_REQUEST_CODE)
-        Log.d(TAG, "关闭飞书闹钟已设置: ${formatTime(hour, minute)}")
+        // 设置新的关闭闹钟
+        times.forEachIndexed { index, time ->
+            if (index < MAX_CLOSE_ALARMS) {
+                val calendar = getNextAlarmTime(time.hour, time.minute)
+                val intent = Intent(context, AlarmReceiver::class.java).apply {
+                    action = AlarmReceiver.ACTION_CLOSE_FEISHU
+                }
+                setAlarm(calendar.timeInMillis, intent, CLOSE_APP_BASE_REQUEST_CODE + index)
+                Log.d(TAG, "关闭飞书闹钟已设置: ${time.toDisplayString()}")
+            }
+        }
     }
-
+    
     /**
-     * 设置下班前关闭飞书闹钟（18:20）
+     * 取消所有关闭闹钟
      */
-    fun setCloseAppEveningAlarm(hour: Int = 18, minute: Int = 20) {
-        val calendar = getNextAlarmTime(hour, minute)
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            action = AlarmReceiver.ACTION_CLOSE_FEISHU
+    private fun cancelAllCloseAlarms() {
+        for (i in 0 until MAX_CLOSE_ALARMS) {
+            cancelAlarm(AlarmReceiver.ACTION_CLOSE_FEISHU, CLOSE_APP_BASE_REQUEST_CODE + i)
         }
-        
-        setAlarm(calendar.timeInMillis, intent, CLOSE_APP_EVENING_REQUEST_CODE)
-        Log.d(TAG, "下班前关闭飞书闹钟已设置: ${formatTime(hour, minute)}")
     }
 
     /**
@@ -110,8 +114,7 @@ class AlarmHelper(private val context: Context) {
     fun cancelAllAlarms() {
         cancelAlarm(AlarmReceiver.ACTION_MORNING_PUNCH, MORNING_REQUEST_CODE)
         cancelAlarm(AlarmReceiver.ACTION_EVENING_PUNCH, EVENING_REQUEST_CODE)
-        cancelAlarm(AlarmReceiver.ACTION_CLOSE_FEISHU, CLOSE_APP_REQUEST_CODE)
-        cancelAlarm(AlarmReceiver.ACTION_CLOSE_FEISHU, CLOSE_APP_EVENING_REQUEST_CODE)
+        cancelAllCloseAlarms()
         Log.d(TAG, "所有闹钟已取消")
     }
 

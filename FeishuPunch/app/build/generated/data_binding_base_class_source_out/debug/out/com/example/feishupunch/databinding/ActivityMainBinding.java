@@ -26,10 +26,16 @@ public final class ActivityMainBinding implements ViewBinding {
   public final MaterialButton btnAccessibility;
 
   @NonNull
+  public final MaterialButton btnAddCloseTime;
+
+  @NonNull
   public final MaterialButton btnCheckFeishu;
 
   @NonNull
   public final MaterialButton btnPunchNow;
+
+  @NonNull
+  public final LinearLayout containerCloseTimes;
 
   @NonNull
   public final LinearLayout layoutEveningTime;
@@ -53,15 +59,18 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView tvStatus;
 
   private ActivityMainBinding(@NonNull ScrollView rootView,
-      @NonNull MaterialButton btnAccessibility, @NonNull MaterialButton btnCheckFeishu,
-      @NonNull MaterialButton btnPunchNow, @NonNull LinearLayout layoutEveningTime,
+      @NonNull MaterialButton btnAccessibility, @NonNull MaterialButton btnAddCloseTime,
+      @NonNull MaterialButton btnCheckFeishu, @NonNull MaterialButton btnPunchNow,
+      @NonNull LinearLayout containerCloseTimes, @NonNull LinearLayout layoutEveningTime,
       @NonNull LinearLayout layoutMorningTime, @NonNull SwitchMaterial switchSchedule,
       @NonNull TextView tvEveningTime, @NonNull TextView tvMorningTime,
       @NonNull TextView tvServiceStatus, @NonNull TextView tvStatus) {
     this.rootView = rootView;
     this.btnAccessibility = btnAccessibility;
+    this.btnAddCloseTime = btnAddCloseTime;
     this.btnCheckFeishu = btnCheckFeishu;
     this.btnPunchNow = btnPunchNow;
+    this.containerCloseTimes = containerCloseTimes;
     this.layoutEveningTime = layoutEveningTime;
     this.layoutMorningTime = layoutMorningTime;
     this.switchSchedule = switchSchedule;
@@ -104,6 +113,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btn_add_close_time;
+      MaterialButton btnAddCloseTime = ViewBindings.findChildViewById(rootView, id);
+      if (btnAddCloseTime == null) {
+        break missingId;
+      }
+
       id = R.id.btn_check_feishu;
       MaterialButton btnCheckFeishu = ViewBindings.findChildViewById(rootView, id);
       if (btnCheckFeishu == null) {
@@ -113,6 +128,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.btn_punch_now;
       MaterialButton btnPunchNow = ViewBindings.findChildViewById(rootView, id);
       if (btnPunchNow == null) {
+        break missingId;
+      }
+
+      id = R.id.container_close_times;
+      LinearLayout containerCloseTimes = ViewBindings.findChildViewById(rootView, id);
+      if (containerCloseTimes == null) {
         break missingId;
       }
 
@@ -158,9 +179,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityMainBinding((ScrollView) rootView, btnAccessibility, btnCheckFeishu,
-          btnPunchNow, layoutEveningTime, layoutMorningTime, switchSchedule, tvEveningTime,
-          tvMorningTime, tvServiceStatus, tvStatus);
+      return new ActivityMainBinding((ScrollView) rootView, btnAccessibility, btnAddCloseTime,
+          btnCheckFeishu, btnPunchNow, containerCloseTimes, layoutEveningTime, layoutMorningTime,
+          switchSchedule, tvEveningTime, tvMorningTime, tvServiceStatus, tvStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

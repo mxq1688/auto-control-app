@@ -66,11 +66,9 @@ class AlarmReceiver : BroadcastReceiver() {
             ACTION_CLOSE_FEISHU -> {
                 // 关闭飞书
                 closeFeishu(context)
-                // 重新设置明天的闹钟（两个时间点）
-                AlarmHelper(context).apply {
-                    setCloseAppEveningAlarm(18, 20)
-                    setCloseAppAlarm(19, 20)
-                }
+                // 重新设置明天的闹钟（使用配置的时间列表）
+                val prefs = PreferenceHelper(context)
+                AlarmHelper(context).setCloseAppAlarms(prefs.getCloseTimes())
             }
         }
     }

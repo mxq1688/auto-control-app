@@ -4,6 +4,27 @@ import android.content.Context
 import android.content.SharedPreferences
 
 /**
+ * 关闭时间数据类
+ */
+data class CloseTime(val hour: Int, val minute: Int) {
+    fun toDisplayString(): String = String.format("%02d:%02d", hour, minute)
+    fun toMinutes(): Int = hour * 60 + minute
+    
+    companion object {
+        fun fromString(str: String): CloseTime? {
+            return try {
+                val parts = str.split(":")
+                CloseTime(parts[0].toInt(), parts[1].toInt())
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+    
+    override fun toString(): String = "$hour:$minute"
+}
+
+/**
  * SharedPreferences 工具类
  */
 class PreferenceHelper(context: Context) {
@@ -32,6 +53,10 @@ class PreferenceHelper(context: Context) {
         private const val DEFAULT_EVENING_START_MINUTE = 40
         private const val DEFAULT_EVENING_END_HOUR = 19
         private const val DEFAULT_EVENING_END_MINUTE = 10
+        
+        // 关闭飞书时间列表
+        private const val KEY_CLOSE_TIMES = "close_times_list"
+        private const val DEFAULT_CLOSE_TIMES = "9:30,18:20,19:20"
     }
 
     private val prefs: SharedPreferences = 
@@ -92,5 +117,42 @@ class PreferenceHelper(context: Context) {
     fun getMorningMinute(): Int = getMorningStartMinute()
     fun getEveningHour(): Int = getEveningStartHour()
     fun getEveningMinute(): Int = getEveningStartMinute()
+    
+    // 关闭飞书时间列表
+    fun getCloseTimes(): List<CloseTime> {
+        val str = prefs.getString(KEY_CLOSE_TIMES, DEFAULT_CLOSE_TIMES) ?: DEFAULT_CLOSE_TIMES
+        return str.split(",")
+            .mapNotNull { CloseTime.fromString(it.trim()) }
+            .sortedBy { it.toMinutes() }
+    }
+    
+    fun setCloseTimes(times: List<CloseTime>) {
+        val str = times.joinToString(",") { it.toString() }
+        prefs.edit().putString(KEY_CLOSE_TIMES, str).apply()
+    }
+    
+    fun addCloseTime(time: CloseTime) {
+        val times = getCloseTimes().toMutableList()
+        // 避免重复
+        if (times.none { it.hour == time.hour && it.minute == time.minute }) {
+            times.add(time)
+            setCloseTimes(times)
+        }
+    }
+    
+    fun removeCloseTime(time: CloseTime) {
+        val times = getCloseTimes().toMutableList()
+        times.removeAll { it.hour == time.hour && it.minute == time.minute }
+        setCloseTimes(times)
+    }
+    
+    fun updateCloseTime(oldTime: CloseTime, newTime: CloseTime) {
+        val times = getCloseTimes().toMutableList()
+        val index = times.indexOfFirst { it.hour == oldTime.hour && it.minute == oldTime.minute }
+        if (index >= 0) {
+            times[index] = newTime
+            setCloseTimes(times)
+        }
+    }
 }
 

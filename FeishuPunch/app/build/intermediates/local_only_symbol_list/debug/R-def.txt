@@ -8,8 +8,10 @@ drawable ic_launcher_foreground
 drawable ic_morning
 drawable ic_notification
 id btn_accessibility
+id btn_add_close_time
 id btn_check_feishu
 id btn_punch_now
+id container_close_times
 id layout_evening_time
 id layout_morning_time
 id switch_schedule

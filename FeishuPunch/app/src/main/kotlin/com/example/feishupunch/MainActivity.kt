@@ -20,6 +20,7 @@ import com.example.feishupunch.databinding.ActivityMainBinding
 import com.example.feishupunch.service.PunchAccessibilityService
 import com.example.feishupunch.service.PunchForegroundService
 import com.example.feishupunch.util.AlarmHelper
+import com.example.feishupunch.util.CloseTime
 import com.example.feishupunch.util.PreferenceHelper
 
 class MainActivity : AppCompatActivity() {
@@ -173,12 +174,20 @@ class MainActivity : AppCompatActivity() {
         binding.btnCheckFeishu.setOnClickListener {
             checkFeishuInstalled()
         }
+        
+        // 添加关闭时间按钮
+        binding.btnAddCloseTime.setOnClickListener {
+            showAddCloseTimePicker()
+        }
     }
 
     private fun loadSettings() {
         // 加载保存的时间设置（范围）
         updateMorningTimeDisplay()
         updateEveningTimeDisplay()
+        
+        // 加载关闭飞书时间
+        updateCloseTimeDisplay()
         
         // 加载开关状态
         binding.switchSchedule.isChecked = prefs.isScheduleEnabled()
@@ -210,6 +219,99 @@ class MainActivity : AppCompatActivity() {
         val startTime = String.format("%02d:%02d", prefs.getEveningStartHour(), prefs.getEveningStartMinute())
         val endTime = String.format("%02d:%02d", prefs.getEveningEndHour(), prefs.getEveningEndMinute())
         binding.tvEveningTime.text = "$startTime-$endTime"
+    }
+    
+    private fun updateCloseTimeDisplay() {
+        val container = binding.containerCloseTimes
+        container.removeAllViews()
+        
+        val times = prefs.getCloseTimes()
+        for (time in times) {
+            addCloseTimeItemView(time)
+        }
+    }
+    
+    private fun addCloseTimeItemView(time: CloseTime) {
+        val container = binding.containerCloseTimes
+        
+        val itemLayout = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                (44 * resources.displayMetrics.density).toInt()
+            )
+            setPadding(
+                (8 * resources.displayMetrics.density).toInt(), 0,
+                (8 * resources.displayMetrics.density).toInt(), 0
+            )
+            setBackgroundResource(android.R.drawable.list_selector_background)
+        }
+        
+        val timeText = android.widget.TextView(this).apply {
+            text = time.toDisplayString()
+            textSize = 15f
+            setTextColor(android.graphics.Color.parseColor("#E91E63"))
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
+            layoutParams = android.widget.LinearLayout.LayoutParams(
+                0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+            )
+        }
+        
+        val deleteBtn = android.widget.TextView(this).apply {
+            text = "删除"
+            textSize = 13f
+            setTextColor(android.graphics.Color.parseColor("#F44336"))
+            setPadding(
+                (12 * resources.displayMetrics.density).toInt(),
+                (8 * resources.displayMetrics.density).toInt(),
+                (12 * resources.displayMetrics.density).toInt(),
+                (8 * resources.displayMetrics.density).toInt()
+            )
+            setOnClickListener {
+                prefs.removeCloseTime(time)
+                updateCloseTimeDisplay()
+                if (prefs.isScheduleEnabled()) {
+                    updateAlarms()
+                }
+                Toast.makeText(this@MainActivity, "已删除 ${time.toDisplayString()}", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        // 点击时间可以修改
+        itemLayout.setOnClickListener {
+            TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+                val newTime = CloseTime(selectedHour, selectedMinute)
+                prefs.updateCloseTime(time, newTime)
+                updateCloseTimeDisplay()
+                if (prefs.isScheduleEnabled()) {
+                    updateAlarms()
+                }
+                Toast.makeText(this, "时间已更新", Toast.LENGTH_SHORT).show()
+            }, time.hour, time.minute, true).apply {
+                setTitle("修改关闭时间")
+            }.show()
+        }
+        
+        itemLayout.addView(timeText)
+        itemLayout.addView(deleteBtn)
+        container.addView(itemLayout)
+    }
+    
+    private fun showAddCloseTimePicker() {
+        TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            val newTime = CloseTime(selectedHour, selectedMinute)
+            prefs.addCloseTime(newTime)
+            updateCloseTimeDisplay()
+            
+            if (prefs.isScheduleEnabled()) {
+                updateAlarms()
+            }
+            
+            Toast.makeText(this, "已添加 ${newTime.toDisplayString()}", Toast.LENGTH_SHORT).show()
+        }, 12, 0, true).apply {
+            setTitle("添加关闭时间")
+        }.show()
     }
 
     private fun checkPermissions() {
@@ -323,10 +425,8 @@ class MainActivity : AppCompatActivity() {
             prefs.getEveningStartHour(), prefs.getEveningStartMinute(),
             prefs.getEveningEndHour(), prefs.getEveningEndMinute()
         )
-        // 18:20 关闭飞书（下班打卡前）
-        alarmHelper.setCloseAppEveningAlarm(18, 20)
-        // 19:20 关闭飞书（下班后）
-        alarmHelper.setCloseAppAlarm(19, 20)
+        // 关闭飞书（使用配置的时间列表）
+        alarmHelper.setCloseAppAlarms(prefs.getCloseTimes())
     }
 
     private fun enableSchedule() {
