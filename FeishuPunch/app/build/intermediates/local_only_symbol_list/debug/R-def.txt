@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color ic_launcher_background
+drawable ic_chevron_right
+drawable ic_evening
+drawable ic_launcher
+drawable ic_launcher_foreground
+drawable ic_morning
+drawable ic_notification
+id btn_accessibility
+id btn_check_feishu
+id btn_punch_now
+id layout_evening_time
+id layout_morning_time
+id switch_schedule
+id tv_evening_time
+id tv_morning_time
+id tv_service_status
+id tv_status
+layout activity_main
+string accessibility_service_description
+string app_name
+style Theme.FeishuPunch
+xml accessibility_service_config
