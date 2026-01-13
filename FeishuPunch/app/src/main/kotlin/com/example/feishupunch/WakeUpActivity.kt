@@ -22,6 +22,14 @@ class WakeUpActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "WakeUpActivity"
         private const val FEISHU_PACKAGE = "com.ss.android.lark"
+        
+        // 防止重复执行的标志
+        @Volatile
+        private var isRunning = false
+        
+        // 上次执行时间，60秒内不重复执行
+        @Volatile
+        private var lastExecuteTime = 0L
     }
 
     private var wakeLock: PowerManager.WakeLock? = null
@@ -35,6 +43,17 @@ class WakeUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         
         Log.d(TAG, "WakeUpActivity 启动 - 息屏唤醒")
+        
+        // 检查是否在短时间内重复执行（60秒内）
+        val now = System.currentTimeMillis()
+        if (isRunning || (now - lastExecuteTime < 60000)) {
+            Log.d(TAG, "60秒内已执行过，跳过本次")
+            finishAndRemoveTask()
+            return
+        }
+        
+        isRunning = true
+        lastExecuteTime = now
         
         // 设置所有可能的窗口标志来唤醒屏幕
         window.addFlags(
@@ -114,6 +133,7 @@ class WakeUpActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
+        isRunning = false
         try {
             wakeLock?.release()
         } catch (e: Exception) {

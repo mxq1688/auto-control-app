@@ -47,6 +47,7 @@
         <activity
             android:name=".WakeUpActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:excludeFromRecents="true"
