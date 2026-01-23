@@ -33,6 +33,7 @@ class PreferenceHelper(context: Context) {
         private const val PREF_NAME = "punch_prefs"
         
         private const val KEY_SCHEDULE_ENABLED = "schedule_enabled"
+        private const val KEY_USER_HAS_TOGGLED = "user_has_toggled"  // 用户是否手动操作过
         // 上班时间范围
         private const val KEY_MORNING_START_HOUR = "morning_start_hour"
         private const val KEY_MORNING_START_MINUTE = "morning_start_minute"
@@ -66,6 +67,13 @@ class PreferenceHelper(context: Context) {
 
     fun setScheduleEnabled(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_SCHEDULE_ENABLED, enabled).apply()
+    }
+    
+    // 用户是否手动操作过定时开关
+    fun hasUserToggled(): Boolean = prefs.getBoolean(KEY_USER_HAS_TOGGLED, false)
+    
+    fun setUserHasToggled(toggled: Boolean) {
+        prefs.edit().putBoolean(KEY_USER_HAS_TOGGLED, toggled).apply()
     }
 
     // 上班开始时间

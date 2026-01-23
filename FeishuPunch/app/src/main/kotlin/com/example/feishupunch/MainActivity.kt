@@ -158,6 +158,9 @@ class MainActivity : AppCompatActivity() {
 
         // 定时开关
         binding.switchSchedule.setOnCheckedChangeListener { _, isChecked ->
+            // 记录用户已手动操作过
+            prefs.setUserHasToggled(true)
+            
             if (isChecked) {
                 if (!isAccessibilityServiceEnabled()) {
                     Toast.makeText(this, "请先开启无障碍服务", Toast.LENGTH_SHORT).show()
@@ -194,9 +197,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 自动开启定时功能
+     * 自动开启定时功能（仅首次）
      */
     private fun autoEnableSchedule() {
+        // 如果用户手动操作过，不再自动开启
+        if (prefs.hasUserToggled()) {
+            return
+        }
+        
         // 如果已经开启了，不重复操作
         if (prefs.isScheduleEnabled()) {
             return
