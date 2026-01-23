@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.feishupunch.MainActivity
 import com.example.feishupunch.R
+import com.example.feishupunch.util.PreferenceHelper
 
 /**
  * 前台服务 - 保持APP在后台运行
@@ -59,6 +60,13 @@ class PunchForegroundService : Service() {
     }
 
     private fun scheduleRestart() {
+        // 只有定时开启时才重启服务
+        val prefs = PreferenceHelper(this)
+        if (!prefs.isScheduleEnabled()) {
+            Log.d(TAG, "定时已关闭，不重启服务")
+            return
+        }
+        
         val restartIntent = Intent(this, PunchForegroundService::class.java)
         val pendingIntent = PendingIntent.getService(
             this, RESTART_REQUEST_CODE, restartIntent,
