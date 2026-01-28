@@ -8,13 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.feishupunch.R;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,25 +42,25 @@ public final class ActivityMainBinding implements ViewBinding {
   public final MaterialButton btnSelectApp;
 
   @NonNull
-  public final Chip chipFriday;
+  public final ToggleButton chipFriday;
 
   @NonNull
-  public final Chip chipMonday;
+  public final ToggleButton chipMonday;
 
   @NonNull
-  public final Chip chipSaturday;
+  public final ToggleButton chipSaturday;
 
   @NonNull
-  public final Chip chipSunday;
+  public final ToggleButton chipSunday;
 
   @NonNull
-  public final Chip chipThursday;
+  public final ToggleButton chipThursday;
 
   @NonNull
-  public final Chip chipTuesday;
+  public final ToggleButton chipTuesday;
 
   @NonNull
-  public final Chip chipWednesday;
+  public final ToggleButton chipWednesday;
 
   @NonNull
   public final LinearLayout containerCloseTimes;
@@ -70,6 +70,9 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout layoutCustomPackage;
+
+  @NonNull
+  public final LinearLayout layoutDays;
 
   @NonNull
   public final LinearLayout layoutEveningTime;
@@ -110,17 +113,18 @@ public final class ActivityMainBinding implements ViewBinding {
   private ActivityMainBinding(@NonNull ScrollView rootView,
       @NonNull MaterialButton btnAccessibility, @NonNull MaterialButton btnAddCloseTime,
       @NonNull MaterialButton btnCheckFeishu, @NonNull MaterialButton btnPunchNow,
-      @NonNull MaterialButton btnSelectApp, @NonNull Chip chipFriday, @NonNull Chip chipMonday,
-      @NonNull Chip chipSaturday, @NonNull Chip chipSunday, @NonNull Chip chipThursday,
-      @NonNull Chip chipTuesday, @NonNull Chip chipWednesday,
+      @NonNull MaterialButton btnSelectApp, @NonNull ToggleButton chipFriday,
+      @NonNull ToggleButton chipMonday, @NonNull ToggleButton chipSaturday,
+      @NonNull ToggleButton chipSunday, @NonNull ToggleButton chipThursday,
+      @NonNull ToggleButton chipTuesday, @NonNull ToggleButton chipWednesday,
       @NonNull LinearLayout containerCloseTimes, @NonNull TextInputEditText etCustomPackage,
-      @NonNull LinearLayout layoutCustomPackage, @NonNull LinearLayout layoutEveningTime,
-      @NonNull LinearLayout layoutMorningTime, @NonNull MaterialRadioButton radioCustom,
-      @NonNull MaterialRadioButton radioDingtalk, @NonNull MaterialRadioButton radioFeishu,
-      @NonNull RadioGroup radioGroupApp, @NonNull SwitchMaterial switchSchedule,
-      @NonNull TextView tvCurrentPackage, @NonNull TextView tvEveningTime,
-      @NonNull TextView tvMorningTime, @NonNull TextView tvServiceStatus,
-      @NonNull TextView tvStatus) {
+      @NonNull LinearLayout layoutCustomPackage, @NonNull LinearLayout layoutDays,
+      @NonNull LinearLayout layoutEveningTime, @NonNull LinearLayout layoutMorningTime,
+      @NonNull MaterialRadioButton radioCustom, @NonNull MaterialRadioButton radioDingtalk,
+      @NonNull MaterialRadioButton radioFeishu, @NonNull RadioGroup radioGroupApp,
+      @NonNull SwitchMaterial switchSchedule, @NonNull TextView tvCurrentPackage,
+      @NonNull TextView tvEveningTime, @NonNull TextView tvMorningTime,
+      @NonNull TextView tvServiceStatus, @NonNull TextView tvStatus) {
     this.rootView = rootView;
     this.btnAccessibility = btnAccessibility;
     this.btnAddCloseTime = btnAddCloseTime;
@@ -137,6 +141,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.containerCloseTimes = containerCloseTimes;
     this.etCustomPackage = etCustomPackage;
     this.layoutCustomPackage = layoutCustomPackage;
+    this.layoutDays = layoutDays;
     this.layoutEveningTime = layoutEveningTime;
     this.layoutMorningTime = layoutMorningTime;
     this.radioCustom = radioCustom;
@@ -209,43 +214,43 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       id = R.id.chip_friday;
-      Chip chipFriday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipFriday = ViewBindings.findChildViewById(rootView, id);
       if (chipFriday == null) {
         break missingId;
       }
 
       id = R.id.chip_monday;
-      Chip chipMonday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipMonday = ViewBindings.findChildViewById(rootView, id);
       if (chipMonday == null) {
         break missingId;
       }
 
       id = R.id.chip_saturday;
-      Chip chipSaturday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipSaturday = ViewBindings.findChildViewById(rootView, id);
       if (chipSaturday == null) {
         break missingId;
       }
 
       id = R.id.chip_sunday;
-      Chip chipSunday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipSunday = ViewBindings.findChildViewById(rootView, id);
       if (chipSunday == null) {
         break missingId;
       }
 
       id = R.id.chip_thursday;
-      Chip chipThursday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipThursday = ViewBindings.findChildViewById(rootView, id);
       if (chipThursday == null) {
         break missingId;
       }
 
       id = R.id.chip_tuesday;
-      Chip chipTuesday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipTuesday = ViewBindings.findChildViewById(rootView, id);
       if (chipTuesday == null) {
         break missingId;
       }
 
       id = R.id.chip_wednesday;
-      Chip chipWednesday = ViewBindings.findChildViewById(rootView, id);
+      ToggleButton chipWednesday = ViewBindings.findChildViewById(rootView, id);
       if (chipWednesday == null) {
         break missingId;
       }
@@ -265,6 +270,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.layout_custom_package;
       LinearLayout layoutCustomPackage = ViewBindings.findChildViewById(rootView, id);
       if (layoutCustomPackage == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_days;
+      LinearLayout layoutDays = ViewBindings.findChildViewById(rootView, id);
+      if (layoutDays == null) {
         break missingId;
       }
 
@@ -343,8 +354,8 @@ public final class ActivityMainBinding implements ViewBinding {
       return new ActivityMainBinding((ScrollView) rootView, btnAccessibility, btnAddCloseTime,
           btnCheckFeishu, btnPunchNow, btnSelectApp, chipFriday, chipMonday, chipSaturday,
           chipSunday, chipThursday, chipTuesday, chipWednesday, containerCloseTimes,
-          etCustomPackage, layoutCustomPackage, layoutEveningTime, layoutMorningTime, radioCustom,
-          radioDingtalk, radioFeishu, radioGroupApp, switchSchedule, tvCurrentPackage,
+          etCustomPackage, layoutCustomPackage, layoutDays, layoutEveningTime, layoutMorningTime,
+          radioCustom, radioDingtalk, radioFeishu, radioGroupApp, switchSchedule, tvCurrentPackage,
           tvEveningTime, tvMorningTime, tvServiceStatus, tvStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);

@@ -1354,6 +1354,10 @@ color cardview_dark_background
 color cardview_light_background
 color cardview_shadow_end_color
 color cardview_shadow_start_color
+color chip_background_selector
+color chip_text_selector
+color day_text_selector
+color day_weekend_text_selector
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
 color design_dark_default_color_background
@@ -2914,6 +2918,9 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable day_button_selector
+drawable day_button_weekend_selector
+drawable day_selector_background
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -3262,6 +3269,7 @@ id jumpToStart
 id labeled
 id layout
 id layout_custom_package
+id layout_days
 id layout_evening_time
 id layout_morning_time
 id left

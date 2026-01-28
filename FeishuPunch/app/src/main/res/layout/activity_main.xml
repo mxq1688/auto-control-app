@@ -258,151 +258,112 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:text="执行日期"
                     android:textSize="14sp"
-                    android:textColor="#999999" />
+                    android:textStyle="bold"
+                    android:textColor="#333333" />
 
                 <LinearLayout
                     android:id="@+id/layout_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal"
-                    android:weightSum="7">
+                    android:gravity="center"
+                    android:background="@drawable/day_selector_background"
+                    android:padding="4dp">
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_monday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="一"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="一"
+                        android:textOff="一"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_text_selector"
+                        android:background="@drawable/day_button_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_tuesday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="二"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="二"
+                        android:textOff="二"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_text_selector"
+                        android:background="@drawable/day_button_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_wednesday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="三"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="三"
+                        android:textOff="三"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_text_selector"
+                        android:background="@drawable/day_button_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_thursday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="四"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="四"
+                        android:textOff="四"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_text_selector"
+                        android:background="@drawable/day_button_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_friday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="五"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="五"
+                        android:textOff="五"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_text_selector"
+                        android:background="@drawable/day_button_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_saturday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="六"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="六"
+                        android:textOff="六"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_weekend_text_selector"
+                        android:background="@drawable/day_button_weekend_selector"
+                        android:button="@null" />
 
-                    <com.google.android.material.chip.Chip
+                    <ToggleButton
                         android:id="@+id/chip_sunday"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="40dp"
-                        android:text="日"
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipMinHeight="40dp"
-                        app:chipCornerRadius="8dp"
-                        app:chipMinTouchTargetSize="0dp"
-                        app:chipStartPadding="0dp"
-                        app:chipEndPadding="0dp"
-                        app:checkedIconVisible="false"
-                        app:chipBackgroundColor="@color/chip_background_selector"
-                        android:textColor="@color/chip_text_selector"
-                        android:checkable="true" />
+                        android:layout_height="44dp"
+                        android:layout_margin="2dp"
+                        android:textOn="日"
+                        android:textOff="日"
+                        android:textSize="15sp"
+                        android:textColor="@color/day_weekend_text_selector"
+                        android:background="@drawable/day_button_weekend_selector"
+                        android:button="@null" />
                 </LinearLayout>
 
                 <View
