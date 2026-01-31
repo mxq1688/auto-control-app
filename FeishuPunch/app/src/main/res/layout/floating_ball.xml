@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/floating_ball_bg"
+    android:padding="8dp"
+    android:elevation="8dp">
+
+    <!-- 拖动区域 -->
+    <LinearLayout
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="4dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📍 坐标采集"
+            android:textSize="12sp"
+            android:textColor="#333333"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_close_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✕"
+            android:textSize="14sp"
+            android:textColor="#999999"
+            android:padding="4dp" />
+    </LinearLayout>
+
+    <!-- 最近采集的坐标 -->
+    <TextView
+        android:id="@+id/tv_last_coord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="点击下方按钮采集"
+        android:textSize="11sp"
+        android:textColor="#666666"
+        android:paddingHorizontal="4dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:ellipsize="end" />
+
+    <!-- 按钮区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btn_capture_single"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点击"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:background="@drawable/btn_capture_bg"
+            android:padding="8dp"
+            android:layout_marginEnd="4dp" />
+
+        <TextView
+            android:id="@+id/btn_capture_swipe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="滑动"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:background="@drawable/btn_capture_swipe_bg"
+            android:padding="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

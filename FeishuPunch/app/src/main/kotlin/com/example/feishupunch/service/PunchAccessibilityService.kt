@@ -13,6 +13,9 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
+import com.example.feishupunch.model.Flow
+import com.example.feishupunch.model.FlowStep
+import com.example.feishupunch.model.StepType
 import com.example.feishupunch.util.PreferenceHelper
 
 /**
@@ -29,14 +32,6 @@ class PunchAccessibilityService : AccessibilityService() {
         
         // 是否正在执行工作
         var isPunching = false
-        
-        // 工作步骤
-        private const val STEP_IDLE = 0
-        private const val STEP_LAUNCH_APP = 1
-        private const val STEP_FIND_WORK_TAB = 2
-        private const val STEP_FIND_ATTENDANCE = 3
-        private const val STEP_DO_PUNCH = 4
-        private const val STEP_DONE = 5
     }
     
     private lateinit var prefs: PreferenceHelper
@@ -45,7 +40,10 @@ class PunchAccessibilityService : AccessibilityService() {
     private var targetPackage: String = PreferenceHelper.PACKAGE_FEISHU
 
     private val handler = Handler(Looper.getMainLooper())
-    private var currentStep = STEP_IDLE
+    
+    // 流程执行相关
+    private var currentFlow: Flow? = null
+    private var currentStepIndex = 0
     private var retryCount = 0
     private val maxRetry = 3
 
@@ -58,16 +56,7 @@ class PunchAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (!isPunching) return
-        
-        event?.let {
-            if (it.packageName == targetPackage) {
-                // 延迟处理，等待页面加载
-                handler.postDelayed({
-                    processCurrentStep()
-                }, 1500)
-            }
-        }
+        // 流程执行由 handler 控制，不再依赖事件
     }
 
     override fun onInterrupt() {
@@ -98,14 +87,26 @@ class PunchAccessibilityService : AccessibilityService() {
             return
         }
         
+        // 获取流程
+        currentFlow = prefs.getFlow()
+        if (currentFlow == null || currentFlow!!.steps.isEmpty()) {
+            finishPunch(false, "未配置执行流程")
+            return
+        }
+        
         isPunching = true
-        currentStep = STEP_LAUNCH_APP
+        currentStepIndex = 0
         retryCount = 0
         
-        Log.d(TAG, "开始工作流程，目标: ${prefs.getTargetAppName()}")
+        Log.d(TAG, "开始执行流程: ${currentFlow!!.name}, 共 ${currentFlow!!.steps.size} 步")
         
-        // 启动目标 APP（屏幕唤醒由 WakeUpActivity 负责）
-        launchTargetApp()
+        // 先唤醒屏幕
+        wakeUpScreen()
+        
+        // 延迟执行第一步
+        handler.postDelayed({
+            executeCurrentStep()
+        }, 500)
         
         // 设置超时
         handler.postDelayed({
@@ -113,41 +114,284 @@ class PunchAccessibilityService : AccessibilityService() {
                 Log.d(TAG, "工作超时")
                 finishPunch(false, "工作超时")
             }
-        }, 60000) // 60秒超时
+        }, 120000) // 120秒超时
     }
-
+    
     /**
-     * 启动目标APP
+     * 执行当前步骤
      */
-    private fun launchTargetApp() {
+    private fun executeCurrentStep() {
+        val flow = currentFlow ?: return
+        
+        if (currentStepIndex >= flow.steps.size) {
+            finishPunch(true, "流程执行完成")
+            return
+        }
+        
+        val step = flow.steps[currentStepIndex]
+        Log.d(TAG, "执行步骤 ${currentStepIndex + 1}/${flow.steps.size}: ${step.getDescription()}")
+        
+        when (step.type) {
+            StepType.OPEN_APP -> executeOpenApp()
+            StepType.CLICK_XY -> executeClickXY(step.x, step.y)
+            StepType.CLICK_TEXT -> executeClickText(step.text)
+            StepType.LONG_PRESS -> executeLongPress(step.x, step.y, step.duration)
+            StepType.DOUBLE_CLICK -> executeDoubleClick(step.x, step.y)
+            StepType.SWIPE -> executeSwipe(step.x, step.y, step.x2, step.y2, step.duration)
+            StepType.DELAY -> executeDelay(step.delay)
+            StepType.BACK -> executeBack()
+            StepType.HOME -> executeHome()
+            StepType.RECENT_APPS -> executeRecentApps()
+            StepType.NOTIFICATIONS -> executeNotifications()
+        }
+    }
+    
+    /**
+     * 执行：打开APP
+     */
+    private fun executeOpenApp() {
         try {
-            // 先唤醒屏幕
-            wakeUpScreen()
-            
             val intent = packageManager.getLaunchIntentForPackage(targetPackage)
             if (intent != null) {
-                // 添加多个flags确保APP被带到前台
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
-                Log.d(TAG, "${prefs.getTargetAppName()} 启动成功")
+                Log.d(TAG, "启动APP成功: $targetPackage")
                 
-                currentStep = STEP_FIND_WORK_TAB
-                
-                // 等待APP启动后开始查找
+                // 等待APP启动
                 handler.postDelayed({
-                    processCurrentStep()
-                }, 5000)
+                    moveToNextStep()
+                }, 3000)
             } else {
-                finishPunch(false, "未找到目标APP: $targetPackage")
+                Log.e(TAG, "未找到APP: $targetPackage")
+                retryOrFail("未找到目标APP")
             }
         } catch (e: Exception) {
             Log.e(TAG, "启动APP失败: ${e.message}")
-            finishPunch(false, "启动APP失败")
+            retryOrFail("启动APP失败")
         }
     }
+    
+    /**
+     * 执行：点击坐标
+     */
+    private fun executeClickXY(x: Int, y: Int) {
+        Log.d(TAG, "点击坐标: ($x, $y)")
+        val success = performClick(x.toFloat(), y.toFloat())
+        
+        handler.postDelayed({
+            if (success) {
+                moveToNextStep()
+            } else {
+                retryOrFail("点击坐标失败")
+            }
+        }, 500)
+    }
+    
+    /**
+     * 执行：点击文本
+     */
+    private fun executeClickText(text: String) {
+        Log.d(TAG, "查找并点击文本: $text")
+        
+        val rootNode = rootInActiveWindow
+        if (rootNode != null) {
+            val nodes = rootNode.findAccessibilityNodeInfosByText(text)
+            for (node in nodes) {
+                if (clickNode(node)) {
+                    Log.d(TAG, "点击文本成功: $text")
+                    handler.postDelayed({
+                        moveToNextStep()
+                    }, 1000)
+                    rootNode.recycle()
+                    return
+                }
+            }
+            rootNode.recycle()
+        }
+        
+        // 未找到，重试
+        handler.postDelayed({
+            retryOrFail("未找到文本: $text")
+        }, 500)
+    }
+    
+    /**
+     * 执行：等待
+     */
+    private fun executeDelay(delay: Long) {
+        Log.d(TAG, "等待 ${delay}ms")
+        handler.postDelayed({
+            moveToNextStep()
+        }, delay)
+    }
+    
+    /**
+     * 执行：返回
+     */
+    private fun executeBack() {
+        performGlobalAction(GLOBAL_ACTION_BACK)
+        handler.postDelayed({
+            moveToNextStep()
+        }, 500)
+    }
+    
+    /**
+     * 执行：回到桌面
+     */
+    private fun executeHome() {
+        performGlobalAction(GLOBAL_ACTION_HOME)
+        handler.postDelayed({
+            moveToNextStep()
+        }, 500)
+    }
+    
+    /**
+     * 执行：最近任务
+     */
+    private fun executeRecentApps() {
+        performGlobalAction(GLOBAL_ACTION_RECENTS)
+        handler.postDelayed({
+            moveToNextStep()
+        }, 500)
+    }
+    
+    /**
+     * 执行：通知栏
+     */
+    private fun executeNotifications() {
+        performGlobalAction(GLOBAL_ACTION_NOTIFICATIONS)
+        handler.postDelayed({
+            moveToNextStep()
+        }, 500)
+    }
+    
+    /**
+     * 执行：长按
+     */
+    private fun executeLongPress(x: Int, y: Int, duration: Long) {
+        Log.d(TAG, "长按: ($x, $y), 持续 ${duration}ms")
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val path = Path()
+            path.moveTo(x.toFloat(), y.toFloat())
+            
+            val gesture = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, duration))
+                .build()
+            
+            dispatchGesture(gesture, object : GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription?) {
+                    handler.postDelayed({ moveToNextStep() }, 300)
+                }
+                override fun onCancelled(gestureDescription: GestureDescription?) {
+                    retryOrFail("长按手势取消")
+                }
+            }, null)
+        } else {
+            retryOrFail("系统版本过低")
+        }
+    }
+    
+    /**
+     * 执行：双击
+     */
+    private fun executeDoubleClick(x: Int, y: Int) {
+        Log.d(TAG, "双击: ($x, $y)")
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val path1 = Path()
+            path1.moveTo(x.toFloat(), y.toFloat())
+            
+            val gesture1 = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path1, 0, 50))
+                .build()
+            
+            dispatchGesture(gesture1, object : GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription?) {
+                    // 短暂延迟后第二次点击
+                    handler.postDelayed({
+                        val path2 = Path()
+                        path2.moveTo(x.toFloat(), y.toFloat())
+                        
+                        val gesture2 = GestureDescription.Builder()
+                            .addStroke(GestureDescription.StrokeDescription(path2, 0, 50))
+                            .build()
+                        
+                        dispatchGesture(gesture2, object : GestureResultCallback() {
+                            override fun onCompleted(gestureDescription: GestureDescription?) {
+                                handler.postDelayed({ moveToNextStep() }, 300)
+                            }
+                            override fun onCancelled(gestureDescription: GestureDescription?) {
+                                retryOrFail("双击第二次取消")
+                            }
+                        }, null)
+                    }, 80)
+                }
+                override fun onCancelled(gestureDescription: GestureDescription?) {
+                    retryOrFail("双击第一次取消")
+                }
+            }, null)
+        } else {
+            retryOrFail("系统版本过低")
+        }
+    }
+    
+    /**
+     * 执行：滑动
+     */
+    private fun executeSwipe(x1: Int, y1: Int, x2: Int, y2: Int, duration: Long) {
+        Log.d(TAG, "滑动: ($x1, $y1) → ($x2, $y2), 持续 ${duration}ms")
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val path = Path()
+            path.moveTo(x1.toFloat(), y1.toFloat())
+            path.lineTo(x2.toFloat(), y2.toFloat())
+            
+            val gesture = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, duration))
+                .build()
+            
+            dispatchGesture(gesture, object : GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription?) {
+                    handler.postDelayed({ moveToNextStep() }, 300)
+                }
+                override fun onCancelled(gestureDescription: GestureDescription?) {
+                    retryOrFail("滑动手势取消")
+                }
+            }, null)
+        } else {
+            retryOrFail("系统版本过低")
+        }
+    }
+    
+    /**
+     * 进入下一步
+     */
+    private fun moveToNextStep() {
+        currentStepIndex++
+        retryCount = 0
+        executeCurrentStep()
+    }
+    
+    /**
+     * 重试或失败
+     */
+    private fun retryOrFail(message: String) {
+        retryCount++
+        if (retryCount >= maxRetry) {
+            Log.d(TAG, "重试次数过多，跳过当前步骤: $message")
+            // 跳过当前步骤继续执行
+            moveToNextStep()
+        } else {
+            Log.d(TAG, "重试步骤 ($retryCount/$maxRetry): $message")
+            handler.postDelayed({
+                executeCurrentStep()
+            }, 1500)
+        }
+    }
+
     
     /**
      * 唤醒屏幕
@@ -171,117 +415,6 @@ class PunchAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * 处理当前步骤
-     */
-    private fun processCurrentStep() {
-        if (!isPunching) return
-        
-        val rootNode = rootInActiveWindow ?: run {
-            retryStep()
-            return
-        }
-
-        when (currentStep) {
-            STEP_FIND_WORK_TAB -> findAndClickWorkTab(rootNode)
-            STEP_FIND_ATTENDANCE -> findAndClickAttendance(rootNode)
-            STEP_DO_PUNCH -> findAndClickPunch(rootNode)
-        }
-        
-        rootNode.recycle()
-    }
-
-    /**
-     * 查找并点击"工作台"
-     */
-    private fun findAndClickWorkTab(rootNode: AccessibilityNodeInfo) {
-        Log.d(TAG, "查找工作台...")
-        
-        // 根据不同 APP 使用不同关键词
-        val workTabTexts = when (prefs.getTargetAppType()) {
-            PreferenceHelper.APP_TYPE_DINGTALK -> listOf("工作台", "工作", "Workbench")
-            else -> listOf("工作台", "工作", "Workplace")  // 飞书和自定义
-        }
-        
-        for (text in workTabTexts) {
-            val nodes = rootNode.findAccessibilityNodeInfosByText(text)
-            for (node in nodes) {
-                if (clickNode(node)) {
-                    Log.d(TAG, "点击工作台成功")
-                    currentStep = STEP_FIND_ATTENDANCE
-                    handler.postDelayed({ processCurrentStep() }, 3000)
-                    return
-                }
-            }
-        }
-        
-        retryStep()
-    }
-
-    /**
-     * 查找并点击考勤入口
-     */
-    private fun findAndClickAttendance(rootNode: AccessibilityNodeInfo) {
-        Log.d(TAG, "查找考勤入口...")
-        
-        // 根据不同 APP 使用不同关键词
-        val attendanceTexts = when (prefs.getTargetAppType()) {
-            PreferenceHelper.APP_TYPE_DINGTALK -> listOf("考勤打卡", "智能考勤", "考勤")
-            else -> listOf("假勤", "考勤打卡", "考勤")  // 飞书和自定义
-        }
-        
-        for (text in attendanceTexts) {
-            val nodes = rootNode.findAccessibilityNodeInfosByText(text)
-            for (node in nodes) {
-                if (clickNode(node)) {
-                    Log.d(TAG, "点击考勤入口成功: $text")
-                    currentStep = STEP_DO_PUNCH
-                    handler.postDelayed({ processCurrentStep() }, 5000)
-                    return
-                }
-            }
-        }
-        
-        // 尝试滚动查找
-        scrollDown(rootNode)
-        retryStep()
-    }
-
-    /**
-     * 执行工作
-     */
-    private fun findAndClickPunch(rootNode: AccessibilityNodeInfo) {
-        Log.d(TAG, "执行工作...")
-        
-        // 查找打卡按钮（按优先级：更新打卡 > 下班打卡 > 上班打卡）
-        val punchTexts = listOf("更新打卡", "下班打卡", "上班打卡")
-        
-        for (text in punchTexts) {
-            val nodes = rootNode.findAccessibilityNodeInfosByText(text)
-            for (node in nodes) {
-                if (clickNode(node)) {
-                    Log.d(TAG, "点击工作按钮成功: $text")
-                    handler.postDelayed({
-                        finishPunch(true, "工作成功")
-                    }, 2000)
-                    return
-                }
-            }
-        }
-        
-        // 检查是否已工作（没有可点击按钮时）
-        val alreadyPunchedTexts = listOf("已打卡", "已签到", "打卡成功")
-        for (text in alreadyPunchedTexts) {
-            val nodes = rootNode.findAccessibilityNodeInfosByText(text)
-            if (nodes.isNotEmpty()) {
-                Log.d(TAG, "检测到已工作状态")
-                finishPunch(true, "已工作")
-                return
-            }
-        }
-        
-        retryStep()
-    }
 
     /**
      * 点击节点
@@ -515,33 +648,14 @@ class PunchAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * 重试当前步骤
-     */
-    private fun retryStep() {
-        retryCount++
-        if (retryCount >= maxRetry) {
-            Log.d(TAG, "重试次数过多，进入下一步")
-            currentStep++
-            retryCount = 0
-            
-            if (currentStep > STEP_DO_PUNCH) {
-                finishPunch(false, "未找到工作按钮")
-                return
-            }
-        }
-        
-        handler.postDelayed({
-            processCurrentStep()
-        }, 2000)
-    }
 
     /**
      * 完成工作
      */
     private fun finishPunch(success: Boolean, message: String) {
         isPunching = false
-        currentStep = STEP_IDLE
+        currentFlow = null
+        currentStepIndex = 0
         retryCount = 0
         
         handler.removeCallbacksAndMessages(null)

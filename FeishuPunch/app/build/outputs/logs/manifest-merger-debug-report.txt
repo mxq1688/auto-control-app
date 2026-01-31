@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-97:12
-INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-97:12
-INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-97:12
-INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-97:12
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-103:12
+INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-103:12
+INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-103:12
+INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:2:1-103:12
 MERGED from [androidx.databinding:viewbinding:8.1.4] /Users/meng/.gradle/caches/transforms-3/dc5c8e88b1461209918a9a6c532b5ef4/transformed/viewbinding-8.1.4/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.work:work-runtime-ktx:2.8.1] /Users/meng/.gradle/caches/transforms-3/9cb7e19de98e4804ee0895e144d40cfa/transformed/work-runtime-ktx-2.8.1/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.material:material:1.9.0] /Users/meng/.gradle/caches/transforms-3/ec6414c3842115228806dc57020a195f/transformed/material-1.9.0/AndroidManifest.xml:17:1-26:12
@@ -107,23 +107,27 @@ ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:1
 		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:15:9-50
 	android:name
 		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:14:22-74
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:16:5-78
+	android:name
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:16:22-75
 queries
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:18:5-22:15
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:19:5-23:15
 package#com.ss.android.lark
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:19:9-55
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:20:9-55
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:19:18-52
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:20:18-52
 package#com.alibaba.android.rimet
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:20:9-61
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:21:9-61
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:20:18-58
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:21:18-58
 package#com.tencent.wework
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:21:9-54
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:22:9-54
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:21:18-51
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:22:18-51
 application
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:24:5-95:19
-INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:24:5-95:19
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:25:5-101:19
+INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:25:5-101:19
 MERGED from [com.google.android.material:material:1.9.0] /Users/meng/.gradle/caches/transforms-3/ec6414c3842115228806dc57020a195f/transformed/material-1.9.0/AndroidManifest.xml:24:5-20
 MERGED from [com.google.android.material:material:1.9.0] /Users/meng/.gradle/caches/transforms-3/ec6414c3842115228806dc57020a195f/transformed/material-1.9.0/AndroidManifest.xml:24:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/meng/.gradle/caches/transforms-3/cc6f7ec79bf511f79c67d45a2d3b205f/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
@@ -149,115 +153,121 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/meng/.gradle/caches/
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.10.1] /Users/meng/.gradle/caches/transforms-3/b9a5353a87d2d1b9ae1b338f0f31108f/transformed/core-1.10.1/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:29:9-35
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:30:9-35
 	android:label
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:27:9-41
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:28:9-41
 	android:roundIcon
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:28:9-50
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:29:9-50
 	tools:targetApi
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:31:9-29
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:32:9-29
 	android:icon
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:26:9-45
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:27:9-45
 	android:allowBackup
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:25:9-35
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:26:9-35
 	android:theme
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:30:9-49
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:31:9-49
 activity#com.example.feishupunch.MainActivity
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:34:9-44:20
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:35:9-45:20
 	android:turnScreenOn
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:38:13-40
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:39:13-40
 	android:showWhenLocked
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:37:13-42
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:38:13-42
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:36:13-36
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:37:13-36
 	android:theme
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:39:13-53
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:40:13-53
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:35:13-41
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:36:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:40:13-43:29
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:13-44:29
 action#android.intent.action.MAIN
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:17-69
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:17-69
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:41:25-66
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:17-77
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:43:17-77
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:42:27-74
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:43:27-74
 activity#com.example.feishupunch.WakeUpActivity
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:47:9-55:56
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:48:9-56:56
 	android:turnScreenOn
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:52:13-40
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:53:13-40
 	android:excludeFromRecents
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:53:13-46
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:54:13-46
 	android:showWhenLocked
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:51:13-42
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:52:13-42
 	android:launchMode
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:50:13-44
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:51:13-44
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:49:13-37
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:50:13-37
 	android:theme
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:55:13-53
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:56:13-53
 	android:taskAffinity
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:54:13-36
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:55:13-36
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:48:13-43
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:49:13-43
 service#com.example.feishupunch.service.PunchAccessibilityService
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:58:9-68:19
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:59:9-69:19
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:60:13-37
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:61:13-37
 	android:permission
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:61:13-79
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:62:13-79
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:59:13-62
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:60:13-62
 intent-filter#action:name:android.accessibilityservice.AccessibilityService
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:62:13-64:29
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:63:13-65:29
 action#android.accessibilityservice.AccessibilityService
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:63:17-92
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:64:17-92
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:63:25-89
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:64:25-89
 meta-data#android.accessibilityservice
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:65:13-67:72
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:66:13-68:72
 	android:resource
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:67:17-69
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:68:17-69
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:66:17-60
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:67:17-60
 service#com.example.feishupunch.service.PunchForegroundService
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:71:9-74:58
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:72:9-75:58
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:73:13-37
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:74:13-37
 	android:foregroundServiceType
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:74:13-55
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:75:13-55
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:72:13-59
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:73:13-59
+service#com.example.feishupunch.service.FloatingWindowService
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:78:9-80:40
+	android:exported
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:13-37
+	android:name
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:79:13-58
 receiver#com.example.feishupunch.receiver.BootReceiver
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:77:9-83:20
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:83:9-89:20
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:79:13-37
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:85:13-37
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:78:13-50
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:84:13-50
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:80:13-82:29
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:86:13-88:29
 action#android.intent.action.BOOT_COMPLETED
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:17-79
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:87:17-79
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:81:25-76
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:87:25-76
 receiver#com.example.feishupunch.receiver.AlarmReceiver
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:86:9-93:20
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:92:9-99:20
 	android:exported
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:88:13-37
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:94:13-37
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:87:13-51
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:93:13-51
 intent-filter#action:name:com.example.feishupunch.EVENING_PUNCH+action:name:com.example.feishupunch.MORNING_PUNCH
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:89:13-92:29
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:95:13-98:29
 action#com.example.feishupunch.MORNING_PUNCH
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:17-80
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:96:17-80
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:90:25-77
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:96:25-77
 action#com.example.feishupunch.EVENING_PUNCH
-ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:91:17-80
+ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:97:17-80
 	android:name
-		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:91:25-77
+		ADDED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml:97:25-77
 uses-sdk
 INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/meng/stu/autojs/FeishuPunch/app/src/main/AndroidManifest.xml

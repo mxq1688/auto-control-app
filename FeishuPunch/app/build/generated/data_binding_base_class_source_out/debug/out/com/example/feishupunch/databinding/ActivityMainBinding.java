@@ -4,6 +4,7 @@ package com.example.feishupunch.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -31,6 +32,9 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final MaterialButton btnAddCloseTime;
+
+  @NonNull
+  public final MaterialButton btnAddStep;
 
   @NonNull
   public final MaterialButton btnCheckFeishu;
@@ -69,6 +73,18 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextInputEditText etCustomPackage;
 
   @NonNull
+  public final ImageView ivExpandArrow;
+
+  @NonNull
+  public final ImageView ivFlowExpandArrow;
+
+  @NonNull
+  public final LinearLayout layoutAppContent;
+
+  @NonNull
+  public final LinearLayout layoutAppHeader;
+
+  @NonNull
   public final LinearLayout layoutCustomPackage;
 
   @NonNull
@@ -76,6 +92,15 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout layoutEveningTime;
+
+  @NonNull
+  public final LinearLayout layoutFlowContent;
+
+  @NonNull
+  public final LinearLayout layoutFlowHeader;
+
+  @NonNull
+  public final LinearLayout layoutFlowSteps;
 
   @NonNull
   public final LinearLayout layoutMorningTime;
@@ -102,6 +127,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView tvEveningTime;
 
   @NonNull
+  public final TextView tvFlowStepCount;
+
+  @NonNull
   public final TextView tvMorningTime;
 
   @NonNull
@@ -112,22 +140,28 @@ public final class ActivityMainBinding implements ViewBinding {
 
   private ActivityMainBinding(@NonNull ScrollView rootView,
       @NonNull MaterialButton btnAccessibility, @NonNull MaterialButton btnAddCloseTime,
-      @NonNull MaterialButton btnCheckFeishu, @NonNull MaterialButton btnPunchNow,
-      @NonNull MaterialButton btnSelectApp, @NonNull ToggleButton chipFriday,
-      @NonNull ToggleButton chipMonday, @NonNull ToggleButton chipSaturday,
-      @NonNull ToggleButton chipSunday, @NonNull ToggleButton chipThursday,
-      @NonNull ToggleButton chipTuesday, @NonNull ToggleButton chipWednesday,
-      @NonNull LinearLayout containerCloseTimes, @NonNull TextInputEditText etCustomPackage,
-      @NonNull LinearLayout layoutCustomPackage, @NonNull LinearLayout layoutDays,
-      @NonNull LinearLayout layoutEveningTime, @NonNull LinearLayout layoutMorningTime,
+      @NonNull MaterialButton btnAddStep, @NonNull MaterialButton btnCheckFeishu,
+      @NonNull MaterialButton btnPunchNow, @NonNull MaterialButton btnSelectApp,
+      @NonNull ToggleButton chipFriday, @NonNull ToggleButton chipMonday,
+      @NonNull ToggleButton chipSaturday, @NonNull ToggleButton chipSunday,
+      @NonNull ToggleButton chipThursday, @NonNull ToggleButton chipTuesday,
+      @NonNull ToggleButton chipWednesday, @NonNull LinearLayout containerCloseTimes,
+      @NonNull TextInputEditText etCustomPackage, @NonNull ImageView ivExpandArrow,
+      @NonNull ImageView ivFlowExpandArrow, @NonNull LinearLayout layoutAppContent,
+      @NonNull LinearLayout layoutAppHeader, @NonNull LinearLayout layoutCustomPackage,
+      @NonNull LinearLayout layoutDays, @NonNull LinearLayout layoutEveningTime,
+      @NonNull LinearLayout layoutFlowContent, @NonNull LinearLayout layoutFlowHeader,
+      @NonNull LinearLayout layoutFlowSteps, @NonNull LinearLayout layoutMorningTime,
       @NonNull MaterialRadioButton radioCustom, @NonNull MaterialRadioButton radioDingtalk,
       @NonNull MaterialRadioButton radioFeishu, @NonNull RadioGroup radioGroupApp,
       @NonNull SwitchMaterial switchSchedule, @NonNull TextView tvCurrentPackage,
-      @NonNull TextView tvEveningTime, @NonNull TextView tvMorningTime,
-      @NonNull TextView tvServiceStatus, @NonNull TextView tvStatus) {
+      @NonNull TextView tvEveningTime, @NonNull TextView tvFlowStepCount,
+      @NonNull TextView tvMorningTime, @NonNull TextView tvServiceStatus,
+      @NonNull TextView tvStatus) {
     this.rootView = rootView;
     this.btnAccessibility = btnAccessibility;
     this.btnAddCloseTime = btnAddCloseTime;
+    this.btnAddStep = btnAddStep;
     this.btnCheckFeishu = btnCheckFeishu;
     this.btnPunchNow = btnPunchNow;
     this.btnSelectApp = btnSelectApp;
@@ -140,9 +174,16 @@ public final class ActivityMainBinding implements ViewBinding {
     this.chipWednesday = chipWednesday;
     this.containerCloseTimes = containerCloseTimes;
     this.etCustomPackage = etCustomPackage;
+    this.ivExpandArrow = ivExpandArrow;
+    this.ivFlowExpandArrow = ivFlowExpandArrow;
+    this.layoutAppContent = layoutAppContent;
+    this.layoutAppHeader = layoutAppHeader;
     this.layoutCustomPackage = layoutCustomPackage;
     this.layoutDays = layoutDays;
     this.layoutEveningTime = layoutEveningTime;
+    this.layoutFlowContent = layoutFlowContent;
+    this.layoutFlowHeader = layoutFlowHeader;
+    this.layoutFlowSteps = layoutFlowSteps;
     this.layoutMorningTime = layoutMorningTime;
     this.radioCustom = radioCustom;
     this.radioDingtalk = radioDingtalk;
@@ -151,6 +192,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.switchSchedule = switchSchedule;
     this.tvCurrentPackage = tvCurrentPackage;
     this.tvEveningTime = tvEveningTime;
+    this.tvFlowStepCount = tvFlowStepCount;
     this.tvMorningTime = tvMorningTime;
     this.tvServiceStatus = tvServiceStatus;
     this.tvStatus = tvStatus;
@@ -192,6 +234,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.btn_add_close_time;
       MaterialButton btnAddCloseTime = ViewBindings.findChildViewById(rootView, id);
       if (btnAddCloseTime == null) {
+        break missingId;
+      }
+
+      id = R.id.btn_add_step;
+      MaterialButton btnAddStep = ViewBindings.findChildViewById(rootView, id);
+      if (btnAddStep == null) {
         break missingId;
       }
 
@@ -267,6 +315,30 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.iv_expand_arrow;
+      ImageView ivExpandArrow = ViewBindings.findChildViewById(rootView, id);
+      if (ivExpandArrow == null) {
+        break missingId;
+      }
+
+      id = R.id.iv_flow_expand_arrow;
+      ImageView ivFlowExpandArrow = ViewBindings.findChildViewById(rootView, id);
+      if (ivFlowExpandArrow == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_app_content;
+      LinearLayout layoutAppContent = ViewBindings.findChildViewById(rootView, id);
+      if (layoutAppContent == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_app_header;
+      LinearLayout layoutAppHeader = ViewBindings.findChildViewById(rootView, id);
+      if (layoutAppHeader == null) {
+        break missingId;
+      }
+
       id = R.id.layout_custom_package;
       LinearLayout layoutCustomPackage = ViewBindings.findChildViewById(rootView, id);
       if (layoutCustomPackage == null) {
@@ -282,6 +354,24 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.layout_evening_time;
       LinearLayout layoutEveningTime = ViewBindings.findChildViewById(rootView, id);
       if (layoutEveningTime == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_flow_content;
+      LinearLayout layoutFlowContent = ViewBindings.findChildViewById(rootView, id);
+      if (layoutFlowContent == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_flow_header;
+      LinearLayout layoutFlowHeader = ViewBindings.findChildViewById(rootView, id);
+      if (layoutFlowHeader == null) {
+        break missingId;
+      }
+
+      id = R.id.layout_flow_steps;
+      LinearLayout layoutFlowSteps = ViewBindings.findChildViewById(rootView, id);
+      if (layoutFlowSteps == null) {
         break missingId;
       }
 
@@ -333,6 +423,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_flow_step_count;
+      TextView tvFlowStepCount = ViewBindings.findChildViewById(rootView, id);
+      if (tvFlowStepCount == null) {
+        break missingId;
+      }
+
       id = R.id.tv_morning_time;
       TextView tvMorningTime = ViewBindings.findChildViewById(rootView, id);
       if (tvMorningTime == null) {
@@ -352,11 +448,13 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ScrollView) rootView, btnAccessibility, btnAddCloseTime,
-          btnCheckFeishu, btnPunchNow, btnSelectApp, chipFriday, chipMonday, chipSaturday,
-          chipSunday, chipThursday, chipTuesday, chipWednesday, containerCloseTimes,
-          etCustomPackage, layoutCustomPackage, layoutDays, layoutEveningTime, layoutMorningTime,
-          radioCustom, radioDingtalk, radioFeishu, radioGroupApp, switchSchedule, tvCurrentPackage,
-          tvEveningTime, tvMorningTime, tvServiceStatus, tvStatus);
+          btnAddStep, btnCheckFeishu, btnPunchNow, btnSelectApp, chipFriday, chipMonday,
+          chipSaturday, chipSunday, chipThursday, chipTuesday, chipWednesday, containerCloseTimes,
+          etCustomPackage, ivExpandArrow, ivFlowExpandArrow, layoutAppContent, layoutAppHeader,
+          layoutCustomPackage, layoutDays, layoutEveningTime, layoutFlowContent, layoutFlowHeader,
+          layoutFlowSteps, layoutMorningTime, radioCustom, radioDingtalk, radioFeishu,
+          radioGroupApp, switchSchedule, tvCurrentPackage, tvEveningTime, tvFlowStepCount,
+          tvMorningTime, tvServiceStatus, tvStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

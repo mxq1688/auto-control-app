@@ -2,6 +2,8 @@ package com.example.feishupunch.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.feishupunch.model.Flow
+import org.json.JSONObject
 
 /**
  * 关闭时间数据类
@@ -75,6 +77,9 @@ class PreferenceHelper(context: Context) {
         
         const val PACKAGE_FEISHU = "com.ss.android.lark"
         const val PACKAGE_DINGTALK = "com.alibaba.android.rimet"
+        
+        // 流程
+        private const val KEY_FLOW = "automation_flow"
     }
 
     private val prefs: SharedPreferences = 
@@ -230,6 +235,24 @@ class PreferenceHelper(context: Context) {
             APP_TYPE_CUSTOM -> "自定义"
             else -> "飞书"
         }
+    }
+    
+    // 获取流程
+    fun getFlow(): Flow {
+        val json = prefs.getString(KEY_FLOW, null)
+        if (json != null) {
+            try {
+                Flow.fromJson(JSONObject(json))?.let { return it }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        return Flow.createDefault()
+    }
+    
+    // 保存流程
+    fun saveFlow(flow: Flow) {
+        prefs.edit().putString(KEY_FLOW, flow.toJson().toString()).apply()
     }
 }
 

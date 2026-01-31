@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- 声明要查询的APP（Android 11+需要） -->
     <queries>
@@ -89,6 +90,11 @@
             android:name="com.example.feishupunch.service.PunchForegroundService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
+
+        <!-- 悬浮窗服务 -->
+        <service
+            android:name="com.example.feishupunch.service.FloatingWindowService"
+            android:exported="false" />
 
         <!-- 开机广播接收器 -->
         <receiver

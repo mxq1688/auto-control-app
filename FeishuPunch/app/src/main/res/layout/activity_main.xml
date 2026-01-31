@@ -92,90 +92,145 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="目标APP"
-                    android:textSize="16sp"
-                    android:textColor="#666666" />
-
-                <RadioGroup
-                    android:id="@+id/radio_group_app"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radio_feishu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="飞书 (com.ss.android.lark)"
-                        android:layout_marginBottom="4dp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radio_dingtalk"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="钉钉 (com.alibaba.android.rimet)"
-                        android:layout_marginBottom="4dp" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radio_custom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="自定义" />
-                </RadioGroup>
-
-                <!-- 自定义包名输入框 -->
+                <!-- 折叠头部 -->
                 <LinearLayout
-                    android:id="@+id/layout_custom_package"
+                    android:id="@+id/layout_app_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:visibility="gone">
+                    android:gravity="center_vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="输入APP包名"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_custom_package"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="目标APP"
+                            android:textSize="14sp"
+                            android:textColor="#999999" />
+
+                        <TextView
+                            android:id="@+id/tv_current_package"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:layout_marginTop="4dp"
+                            android:text="com.ss.android.lark"
+                            android:textSize="14sp"
+                            android:textColor="#333333"
+                            android:ellipsize="middle"
                             android:singleLine="true" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_select_app"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="选择"
-                        android:textAllCaps="false"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        app:cornerRadius="8dp" />
+                    <ImageView
+                        android:id="@+id/iv_expand_arrow"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        android:contentDescription="展开" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_current_package"
+                <!-- 展开内容 -->
+                <LinearLayout
+                    android:id="@+id/layout_app_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="当前: com.ss.android.lark"
-                    android:textSize="12sp"
-                    android:textColor="#999999" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#E0E0E0" />
+
+                    <RadioGroup
+                        android:id="@+id/radio_group_app"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radio_feishu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="com.ss.android.lark"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="4dp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radio_dingtalk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="com.alibaba.android.rimet"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="4dp" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radio_custom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="自定义包名"
+                            android:textSize="13sp" />
+                    </RadioGroup>
+
+                    <!-- 自定义包名输入框 -->
+                    <LinearLayout
+                        android:id="@+id/layout_custom_package"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="输入包名"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_custom_package"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textSize="13sp"
+                                android:singleLine="true" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_select_app"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="选择"
+                            android:textAllCaps="false"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            app:cornerRadius="8dp" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_check_feishu"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="12dp"
+                        android:text="检查安装状态"
+                        android:textSize="13sp"
+                        android:textAllCaps="false"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        app:cornerRadius="8dp" />
+                </LinearLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- 立即卡片 -->
+        <!-- 流程管理卡片 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,32 +244,101 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- 折叠头部 -->
+                <LinearLayout
+                    android:id="@+id/layout_flow_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="手动"
-                    android:textSize="16sp"
-                    android:textColor="#666666" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="执行流程"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_flow_step_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6 步"
+                        android:textSize="13sp"
+                        android:textColor="#999999"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_flow_expand_arrow"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        android:contentDescription="展开" />
+                </LinearLayout>
+
+                <!-- 展开内容 -->
+                <LinearLayout
+                    android:id="@+id/layout_flow_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- 步骤列表容器 -->
+                    <LinearLayout
+                        android:id="@+id/layout_flow_steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <!-- 添加步骤按钮 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_add_step"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="8dp"
+                        android:text="+ 添加步骤"
+                        android:textSize="14sp"
+                        android:textAllCaps="false"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        app:cornerRadius="8dp"
+                        app:strokeColor="#4CAF50" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 立即执行卡片 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_punch_now"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
-                    android:text="立即"
+                    android:text="立即执行"
                     android:textSize="18sp"
                     android:textAllCaps="false"
                     app:backgroundTint="#4CAF50"
-                    app:cornerRadius="8dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_check_feishu"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
-                    android:text="检查目标APP"
-                    android:textAllCaps="false"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>

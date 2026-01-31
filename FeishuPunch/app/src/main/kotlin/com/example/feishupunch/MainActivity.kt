@@ -10,13 +10,22 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityManager
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.feishupunch.databinding.ActivityMainBinding
+import com.example.feishupunch.model.Flow
+import com.example.feishupunch.model.FlowStep
+import com.example.feishupunch.model.StepType
 import com.example.feishupunch.service.PunchAccessibilityService
 import com.example.feishupunch.service.PunchForegroundService
 import com.example.feishupunch.util.AlarmHelper
@@ -28,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: PreferenceHelper
     private lateinit var alarmHelper: AlarmHelper
+    private lateinit var currentFlow: Flow
 
     // 接收工作结果
     private val punchResultReceiver = object : BroadcastReceiver() {
@@ -195,6 +205,18 @@ class MainActivity : AppCompatActivity() {
             showAddCloseTimePicker()
         }
         
+        // 目标APP展开/折叠
+        binding.layoutAppHeader.setOnClickListener {
+            val isExpanded = binding.layoutAppContent.visibility == android.view.View.VISIBLE
+            if (isExpanded) {
+                binding.layoutAppContent.visibility = android.view.View.GONE
+                binding.ivExpandArrow.rotation = 0f
+            } else {
+                binding.layoutAppContent.visibility = android.view.View.VISIBLE
+                binding.ivExpandArrow.rotation = 180f
+            }
+        }
+        
         // APP选择监听
         binding.radioGroupApp.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -227,6 +249,23 @@ class MainActivity : AppCompatActivity() {
         // 选择APP按钮
         binding.btnSelectApp.setOnClickListener {
             showAppListDialog()
+        }
+        
+        // 流程展开/折叠
+        binding.layoutFlowHeader.setOnClickListener {
+            val isExpanded = binding.layoutFlowContent.visibility == View.VISIBLE
+            if (isExpanded) {
+                binding.layoutFlowContent.visibility = View.GONE
+                binding.ivFlowExpandArrow.rotation = 0f
+            } else {
+                binding.layoutFlowContent.visibility = View.VISIBLE
+                binding.ivFlowExpandArrow.rotation = 180f
+            }
+        }
+        
+        // 添加步骤按钮
+        binding.btnAddStep.setOnClickListener {
+            showAddStepDialog()
         }
     }
     
@@ -335,6 +374,9 @@ class MainActivity : AppCompatActivity() {
         // 加载目标APP选择
         loadAppSelection()
         
+        // 加载流程
+        loadFlow()
+        
         // 加载开关状态
         binding.switchSchedule.isChecked = prefs.isScheduleEnabled()
     }
@@ -365,7 +407,7 @@ class MainActivity : AppCompatActivity() {
      * 更新当前包名显示
      */
     private fun updateCurrentPackageDisplay() {
-        binding.tvCurrentPackage.text = "当前: ${prefs.getTargetPackage()}"
+        binding.tvCurrentPackage.text = prefs.getTargetPackage()
     }
     
     /**
@@ -761,6 +803,477 @@ class MainActivity : AppCompatActivity() {
             
             builder.show()
         }
+    }
+    
+    // ==================== 流程管理 ====================
+    
+    /**
+     * 加载流程
+     */
+    private fun loadFlow() {
+        currentFlow = prefs.getFlow()
+        updateFlowDisplay()
+    }
+    
+    /**
+     * 更新流程显示
+     */
+    private fun updateFlowDisplay() {
+        binding.tvFlowStepCount.text = "${currentFlow.steps.size} 步"
+        
+        binding.layoutFlowSteps.removeAllViews()
+        currentFlow.steps.forEachIndexed { index, step ->
+            val itemView = LayoutInflater.from(this)
+                .inflate(R.layout.item_flow_step, binding.layoutFlowSteps, false)
+            
+            itemView.findViewById<TextView>(R.id.tv_step_number).text = "${index + 1}"
+            itemView.findViewById<TextView>(R.id.tv_step_desc).text = step.getDescription()
+            
+            itemView.findViewById<ImageButton>(R.id.btn_edit_step).setOnClickListener {
+                showEditStepDialog(index, step)
+            }
+            
+            itemView.findViewById<ImageButton>(R.id.btn_delete_step).setOnClickListener {
+                AlertDialog.Builder(this)
+                    .setTitle("删除步骤")
+                    .setMessage("确定删除「${step.getDescription()}」?")
+                    .setPositiveButton("删除") { _, _ ->
+                        currentFlow.steps.removeAt(index)
+                        prefs.saveFlow(currentFlow)
+                        updateFlowDisplay()
+                    }
+                    .setNegativeButton("取消", null)
+                    .show()
+            }
+            
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.bottomMargin = (8 * resources.displayMetrics.density).toInt()
+            itemView.layoutParams = params
+            
+            binding.layoutFlowSteps.addView(itemView)
+        }
+    }
+    
+    /**
+     * 显示添加步骤对话框
+     */
+    private fun showAddStepDialog() {
+        val stepTypes = StepType.values()
+        val typeNames = stepTypes.map { it.displayName }.toTypedArray()
+        
+        AlertDialog.Builder(this)
+            .setTitle("选择步骤类型")
+            .setItems(typeNames) { _, which ->
+                val selectedType = stepTypes[which]
+                showStepConfigDialog(selectedType) { newStep ->
+                    currentFlow.steps.add(newStep)
+                    prefs.saveFlow(currentFlow)
+                    updateFlowDisplay()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 显示编辑步骤对话框
+     */
+    private fun showEditStepDialog(index: Int, step: FlowStep) {
+        val stepTypes = StepType.values()
+        val typeNames = stepTypes.map { it.displayName }.toTypedArray()
+        val currentIndex = stepTypes.indexOf(step.type)
+        
+        AlertDialog.Builder(this)
+            .setTitle("编辑步骤")
+            .setSingleChoiceItems(typeNames, currentIndex) { dialog, which ->
+                dialog.dismiss()
+                val selectedType = stepTypes[which]
+                showStepConfigDialog(selectedType, step) { updatedStep ->
+                    currentFlow.steps[index] = updatedStep
+                    prefs.saveFlow(currentFlow)
+                    updateFlowDisplay()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 显示步骤配置对话框
+     */
+    private fun showStepConfigDialog(type: StepType, existingStep: FlowStep? = null, onConfirm: (FlowStep) -> Unit) {
+        when (type) {
+            StepType.OPEN_APP, StepType.BACK, StepType.HOME, 
+            StepType.RECENT_APPS, StepType.NOTIFICATIONS -> {
+                // 这些类型不需要额外配置
+                onConfirm(FlowStep(type = type))
+            }
+            StepType.CLICK_XY -> {
+                showClickXYDialog(existingStep, onConfirm)
+            }
+            StepType.CLICK_TEXT -> {
+                showClickTextDialog(existingStep, onConfirm)
+            }
+            StepType.LONG_PRESS -> {
+                showLongPressDialog(existingStep, onConfirm)
+            }
+            StepType.DOUBLE_CLICK -> {
+                showDoubleClickDialog(existingStep, onConfirm)
+            }
+            StepType.SWIPE -> {
+                showSwipeDialog(existingStep, onConfirm)
+            }
+            StepType.DELAY -> {
+                showDelayDialog(existingStep, onConfirm)
+            }
+        }
+    }
+    
+    /**
+     * 点击坐标配置对话框
+     */
+    private fun showClickXYDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+        }
+        
+        val etX = EditText(this).apply {
+            hint = "X 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.x?.toString() ?: "")
+        }
+        val etY = EditText(this).apply {
+            hint = "Y 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.y?.toString() ?: "")
+        }
+        
+        layout.addView(TextView(this).apply { text = "X 坐标:" })
+        layout.addView(etX)
+        layout.addView(TextView(this).apply { 
+            text = "Y 坐标:"
+            setPadding(0, 16, 0, 0)
+        })
+        layout.addView(etY)
+        
+        // 采集坐标按钮
+        val btnCapture = com.google.android.material.button.MaterialButton(this).apply {
+            text = "📍 采集坐标"
+            setOnClickListener {
+                startCoordinateCapture { x, y ->
+                    etX.setText(x.toString())
+                    etY.setText(y.toString())
+                }
+            }
+        }
+        layout.addView(btnCapture)
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置点击坐标")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val x = etX.text.toString().toIntOrNull() ?: 0
+                val y = etY.text.toString().toIntOrNull() ?: 0
+                onConfirm(FlowStep(type = StepType.CLICK_XY, x = x, y = y))
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 点击文本配置对话框
+     */
+    private fun showClickTextDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val etText = EditText(this).apply {
+            hint = "输入要点击的文本"
+            setText(existingStep?.text ?: "")
+        }
+        
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+            addView(etText)
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置点击文本")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val text = etText.text.toString()
+                if (text.isNotBlank()) {
+                    onConfirm(FlowStep(type = StepType.CLICK_TEXT, text = text))
+                } else {
+                    Toast.makeText(this, "请输入文本", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 等待时间配置对话框
+     */
+    private fun showDelayDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val etDelay = EditText(this).apply {
+            hint = "等待时间（毫秒）"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.delay?.toString() ?: "1000")
+        }
+        
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+            addView(etDelay)
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置等待时间")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val delay = etDelay.text.toString().toLongOrNull() ?: 1000
+                onConfirm(FlowStep(type = StepType.DELAY, delay = delay))
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 长按配置对话框
+     */
+    private fun showLongPressDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+        }
+        
+        val etX = EditText(this).apply {
+            hint = "X 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.x?.toString() ?: "")
+        }
+        val etY = EditText(this).apply {
+            hint = "Y 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.y?.toString() ?: "")
+        }
+        val etDuration = EditText(this).apply {
+            hint = "长按时间（毫秒）"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.duration?.toString() ?: "500")
+        }
+        
+        layout.addView(TextView(this).apply { text = "X 坐标:" })
+        layout.addView(etX)
+        layout.addView(TextView(this).apply { text = "Y 坐标:"; setPadding(0, 16, 0, 0) })
+        layout.addView(etY)
+        layout.addView(TextView(this).apply { text = "长按时间(ms):"; setPadding(0, 16, 0, 0) })
+        layout.addView(etDuration)
+        
+        // 采集坐标按钮
+        val btnCapture = com.google.android.material.button.MaterialButton(this).apply {
+            text = "📍 采集坐标"
+            setOnClickListener {
+                startCoordinateCapture { x, y ->
+                    etX.setText(x.toString())
+                    etY.setText(y.toString())
+                }
+            }
+        }
+        layout.addView(btnCapture)
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置长按")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val x = etX.text.toString().toIntOrNull() ?: 0
+                val y = etY.text.toString().toIntOrNull() ?: 0
+                val duration = etDuration.text.toString().toLongOrNull() ?: 500
+                onConfirm(FlowStep(type = StepType.LONG_PRESS, x = x, y = y, duration = duration))
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 双击配置对话框
+     */
+    private fun showDoubleClickDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+        }
+        
+        val etX = EditText(this).apply {
+            hint = "X 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.x?.toString() ?: "")
+        }
+        val etY = EditText(this).apply {
+            hint = "Y 坐标"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.y?.toString() ?: "")
+        }
+        
+        layout.addView(TextView(this).apply { text = "X 坐标:" })
+        layout.addView(etX)
+        layout.addView(TextView(this).apply { text = "Y 坐标:"; setPadding(0, 16, 0, 0) })
+        layout.addView(etY)
+        
+        // 采集坐标按钮
+        val btnCapture = com.google.android.material.button.MaterialButton(this).apply {
+            text = "📍 采集坐标"
+            setOnClickListener {
+                startCoordinateCapture { x, y ->
+                    etX.setText(x.toString())
+                    etY.setText(y.toString())
+                }
+            }
+        }
+        layout.addView(btnCapture)
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置双击")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val x = etX.text.toString().toIntOrNull() ?: 0
+                val y = etY.text.toString().toIntOrNull() ?: 0
+                onConfirm(FlowStep(type = StepType.DOUBLE_CLICK, x = x, y = y))
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 滑动配置对话框
+     */
+    private fun showSwipeDialog(existingStep: FlowStep?, onConfirm: (FlowStep) -> Unit) {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 32, 48, 0)
+        }
+        
+        val etX1 = EditText(this).apply {
+            hint = "起点 X"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.x?.toString() ?: "")
+        }
+        val etY1 = EditText(this).apply {
+            hint = "起点 Y"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.y?.toString() ?: "")
+        }
+        val etX2 = EditText(this).apply {
+            hint = "终点 X"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.x2?.toString() ?: "")
+        }
+        val etY2 = EditText(this).apply {
+            hint = "终点 Y"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.y2?.toString() ?: "")
+        }
+        val etDuration = EditText(this).apply {
+            hint = "滑动时间（毫秒）"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(existingStep?.duration?.toString() ?: "300")
+        }
+        
+        layout.addView(TextView(this).apply { text = "起点 X:" })
+        layout.addView(etX1)
+        layout.addView(TextView(this).apply { text = "起点 Y:"; setPadding(0, 8, 0, 0) })
+        layout.addView(etY1)
+        layout.addView(TextView(this).apply { text = "终点 X:"; setPadding(0, 16, 0, 0) })
+        layout.addView(etX2)
+        layout.addView(TextView(this).apply { text = "终点 Y:"; setPadding(0, 8, 0, 0) })
+        layout.addView(etY2)
+        layout.addView(TextView(this).apply { text = "滑动时间(ms):"; setPadding(0, 16, 0, 0) })
+        layout.addView(etDuration)
+        
+        // 采集滑动坐标按钮
+        val btnCapture = com.google.android.material.button.MaterialButton(this).apply {
+            text = "📍 采集滑动轨迹"
+            setOnClickListener {
+                startSwipeCapture { x1, y1, x2, y2 ->
+                    etX1.setText(x1.toString())
+                    etY1.setText(y1.toString())
+                    etX2.setText(x2.toString())
+                    etY2.setText(y2.toString())
+                }
+            }
+        }
+        layout.addView(btnCapture)
+        
+        AlertDialog.Builder(this)
+            .setTitle("设置滑动")
+            .setView(layout)
+            .setPositiveButton("确定") { _, _ ->
+                val x1 = etX1.text.toString().toIntOrNull() ?: 0
+                val y1 = etY1.text.toString().toIntOrNull() ?: 0
+                val x2 = etX2.text.toString().toIntOrNull() ?: 0
+                val y2 = etY2.text.toString().toIntOrNull() ?: 0
+                val duration = etDuration.text.toString().toLongOrNull() ?: 300
+                onConfirm(FlowStep(type = StepType.SWIPE, x = x1, y = y1, x2 = x2, y2 = y2, duration = duration))
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    // ==================== 坐标采集 ====================
+    
+    /**
+     * 检查悬浮窗权限
+     */
+    private fun checkOverlayPermission(): Boolean {
+        if (!android.provider.Settings.canDrawOverlays(this)) {
+            AlertDialog.Builder(this)
+                .setTitle("需要悬浮窗权限")
+                .setMessage("坐标采集功能需要悬浮窗权限，点击确定前往设置")
+                .setPositiveButton("确定") { _, _ ->
+                    val intent = Intent(
+                        android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:$packageName")
+                    )
+                    startActivity(intent)
+                }
+                .setNegativeButton("取消", null)
+                .show()
+            return false
+        }
+        return true
+    }
+    
+    /**
+     * 启动坐标采集悬浮窗
+     */
+    private fun startCoordinateCapture(onCaptured: (Int, Int) -> Unit) {
+        if (!checkOverlayPermission()) return
+        
+        com.example.feishupunch.service.FloatingWindowService.onCoordinateSelected = onCaptured
+        val intent = Intent(this, com.example.feishupunch.service.FloatingWindowService::class.java).apply {
+            action = "START_SINGLE"
+        }
+        startService(intent)
+        
+        Toast.makeText(this, "悬浮窗已启动，点击屏幕采集坐标", Toast.LENGTH_SHORT).show()
+    }
+    
+    /**
+     * 启动滑动轨迹采集
+     */
+    private fun startSwipeCapture(onCaptured: (Int, Int, Int, Int) -> Unit) {
+        if (!checkOverlayPermission()) return
+        
+        com.example.feishupunch.service.FloatingWindowService.onSwipeSelected = onCaptured
+        val intent = Intent(this, com.example.feishupunch.service.FloatingWindowService::class.java).apply {
+            action = "START_SWIPE"
+        }
+        startService(intent)
+        
+        Toast.makeText(this, "悬浮窗已启动，先点起点再点终点", Toast.LENGTH_SHORT).show()
     }
 }
 

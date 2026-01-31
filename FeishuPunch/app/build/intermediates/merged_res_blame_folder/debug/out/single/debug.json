@@ -4,44 +4,52 @@
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_morning.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_day_selector_background.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/drawable/day_selector_background.xml"
+        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_btn_capture_bg.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/drawable/btn_capture_bg.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/color_day_weekend_text_selector.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/color/day_weekend_text_selector.xml"
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_item_step_background.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/item_step_background.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_day_button_selector.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/drawable/day_button_selector.xml"
+        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_btn_cancel_bg.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/drawable/btn_cancel_bg.xml"
     },
     {
-        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/color_chip_background_selector.xml.flat",
-        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/color/chip_background_selector.xml"
+        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_btn_capture_swipe_bg.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/drawable/btn_capture_swipe_bg.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_day_button_weekend_selector.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/drawable/day_button_weekend_selector.xml"
+        "merged": "com.example.feishupunch.app-merged_res-38:/drawable_floating_ball_bg.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/drawable/floating_ball_bg.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/color_day_text_selector.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/color/day_text_selector.xml"
+        "merged": "com.example.feishupunch.app-merged_res-38:/layout_overlay_coordinate_capture.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/layout/overlay_coordinate_capture.xml"
     },
     {
-        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_chevron_right.xml.flat",
-        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_chevron_right.xml"
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/layout_item_flow_step.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/item_flow_step.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-merged_res-38:/layout_activity_main.xml.flat",
-        "source": "com.example.feishupunch.app-main-40:/layout/activity_main.xml"
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_day_selector_background.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/day_selector_background.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/layout_overlay_coordinate_capture.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/overlay_coordinate_capture.xml"
+    },
+    {
+        "merged": "com.example.feishupunch.app-merged_res-38:/layout_floating_ball.xml.flat",
+        "source": "com.example.feishupunch.app-main-40:/layout/floating_ball.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_btn_cancel_bg.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/btn_cancel_bg.xml"
     },
     {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_notification.xml.flat",
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_notification.xml"
-    },
-    {
-        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/layout_activity_main.xml.flat",
-        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/activity_main.xml"
     },
     {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_launcher_foreground.xml.flat",
@@ -56,11 +64,43 @@
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_launcher.xml"
     },
     {
-        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_evening.xml.flat",
-        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_evening.xml"
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_day_button_weekend_selector.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/day_button_weekend_selector.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/color_day_weekend_text_selector.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/color/day_weekend_text_selector.xml"
     },
     {
         "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/color_chip_text_selector.xml.flat",
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/color/chip_text_selector.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_day_button_selector.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/day_button_selector.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/color_chip_background_selector.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/color/chip_background_selector.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_circle_number_bg.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/circle_number_bg.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_chevron_right.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_chevron_right.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/layout_activity_main.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/color_day_text_selector.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/color/day_text_selector.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-merged_res-38:/drawable_ic_evening.xml.flat",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/drawable/ic_evening.xml"
     }
 ]

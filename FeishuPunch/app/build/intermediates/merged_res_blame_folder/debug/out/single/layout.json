@@ -4,7 +4,19 @@
         "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.feishupunch.app-mergeDebugResources-37:/layout/activity_main.xml",
-        "source": "com.example.feishupunch.app-main-40:/layout/activity_main.xml"
+        "merged": "com.example.feishupunch.app-mergeDebugResources-37:/layout/floating_ball.xml",
+        "source": "com.example.feishupunch.app-main-40:/layout/floating_ball.xml"
+    },
+    {
+        "merged": "com.example.feishupunch.app-mergeDebugResources-37:/layout/overlay_coordinate_capture.xml",
+        "source": "com.example.feishupunch.app-main-40:/layout/overlay_coordinate_capture.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-mergeDebugResources-37:/layout/item_flow_step.xml",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/item_flow_step.xml"
+    },
+    {
+        "merged": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-mergeDebugResources-37:/layout/overlay_coordinate_capture.xml",
+        "source": "/Users/meng/.gradle/daemon/8.2/com.example.feishupunch.app-main-40:/layout/overlay_coordinate_capture.xml"
     }
 ]
