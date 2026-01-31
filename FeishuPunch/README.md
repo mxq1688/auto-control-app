@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mxq1688/autojs/releases"><img src="https://img.shields.io/github/v/release/mxq1688/autojs?style=flat-square" alt="Release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/mxq1688/autojs?style=flat-square" alt="License"></a>
+  <a href="https://github.com/mxq1688/auto-control-app/releases"><img src="https://img.shields.io/github/v/release/mxq1688/auto-control-app?style=flat-square" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/mxq1688/auto-control-app?style=flat-square" alt="License"></a>
   <img src="https://img.shields.io/badge/Android-7.0%2B-green?style=flat-square" alt="Android">
 </p>
 
@@ -53,13 +53,13 @@
 
 ### 方式一：下载安装
 
-前往 [Releases](https://github.com/mxq1688/autojs/releases) 下载最新 APK 安装。
+前往 [Releases](https://github.com/mxq1688/auto-control-app/releases) 下载最新 APK 安装。
 
 ### 方式二：编译安装
 
 ```bash
-git clone https://github.com/mxq1688/autojs.git
-cd autojs/FeishuPunch
+git clone https://github.com/mxq1688/auto-control-app.git
+cd auto-control-app/FeishuPunch
 ./gradlew assembleDebug
 ```
 
